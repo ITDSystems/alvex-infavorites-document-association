@@ -19,9 +19,12 @@
 
 <beans>
 	<!-- This is filtered by Maven at build time, so that module name is single sourced. -->
-    <bean id="com.itdhq-InFavoritesAssociations" class="com.itdhq.infavoritesassociation.InFavoritesAssociation.java" init-method="init">
+    <bean id="com.itdhq-InFavoritesAssociations" class="com.itdhq.infavoritesassociation.InFavoritesAssociation" init-method="init">
         <property name="nodeService">
             <ref bean="NodeService" />
+        </property>
+        <property name="policyComponent">
+            <ref bean="policyComponent" />
         </property>
     </bean>
 </beans>
