@@ -10,7 +10,8 @@ import org.apache.log4j.Logger;
  * Created by malchun on 12/15/15.
  */
 public class InFavoritesAssociation
-    implements FavouritesServiceImpl.OnAddFavouritePolicy
+    implements FavouritesServiceImpl.OnAddFavouritePolicy,
+        FavouritesServiceImpl.OnRemoveFavouritePolicy
 {
     private Logger logger = Logger.getLogger(InFavoritesAssociation.class);
 
@@ -27,5 +28,12 @@ public class InFavoritesAssociation
     public void onAddFavourite(String s, NodeRef nodeRef)
     {
         logger.debug("Added in favorite :" + nodeService.getProperty(nodeRef, ContentModel.PROP_NAME).toString());
+        logger.debug(nodeService.getProperties(nodeRef).toString());
+    }
+
+    @Override
+    public void onRemoveFavourite(String s, NodeRef nodeRef) {
+        logger.debug("Removed from favorite :" + nodeService.getProperty(nodeRef, ContentModel.PROP_NAME).toString());
+        logger.debug(nodeService.getProperties(nodeRef).toString());
     }
 }
