@@ -2,6 +2,7 @@ package com.itdhq.infavoritesassociation;
 
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.favourites.FavouritesServiceImpl;
+import org.alfresco.repo.node.NodeServicePolicies;
 import org.alfresco.repo.policy.Behaviour;
 import org.alfresco.repo.policy.JavaBehaviour;
 import org.alfresco.repo.policy.PolicyComponent;
@@ -29,22 +30,28 @@ public class InFavoritesAssociation
     public void init()
     {
         logger.debug("InFavoritesAssociation set to work!");
-        Behaviour onAddFavourite = new JavaBehaviour(this, "onAddFavourite", Behaviour.NotificationFrequency.TRANSACTION_COMMIT);
-        this.policyComponent.bindClassBehaviour(QName.createQName(NamespaceService.ALFRESCO_URI, "onAddFavourite"), InFavoritesAssociation.class, onAddFavourite);
 
-        Behaviour onRemoveFavourite = new JavaBehaviour(this, "onRemoveFavourite", Behaviour.NotificationFrequency.TRANSACTION_COMMIT);
-        this.policyComponent.bindClassBehaviour(QName.createQName(NamespaceService.ALFRESCO_URI, "onRemoveFavourite"), InFavoritesAssociation.class, onRemoveFavourite);
+        this.policyComponent.bindClassBehaviour(FavouritesServiceImpl.OnAddFavouritePolicy.QNAME,
+                InFavoritesAssociation.class,
+                new JavaBehaviour(this, "onAddFavourite", Behaviour.NotificationFrequency.EVERY_EVENT));
+
+        this.policyComponent.bindClassBehaviour(FavouritesServiceImpl.OnRemoveFavouritePolicy.QNAME,
+                InFavoritesAssociation.class,
+                new JavaBehaviour(this, "onRemoveFavourite", Behaviour.NotificationFrequency.EVERY_EVENT));
     }
 
     @Override
     public void onAddFavourite(String s, NodeRef nodeRef)
     {
+        logger.debug("onAddFavourite");
         logger.debug("Added in favorite :" + nodeService.getProperty(nodeRef, ContentModel.PROP_NAME).toString());
         logger.debug(nodeService.getProperties(nodeRef).toString());
     }
 
     @Override
-    public void onRemoveFavourite(String s, NodeRef nodeRef) {
+    public void onRemoveFavourite(String s, NodeRef nodeRef)
+    {
+        logger.debug("onRemoveFavourite");
         logger.debug("Removed from favorite :" + nodeService.getProperty(nodeRef, ContentModel.PROP_NAME).toString());
         logger.debug(nodeService.getProperties(nodeRef).toString());
     }
