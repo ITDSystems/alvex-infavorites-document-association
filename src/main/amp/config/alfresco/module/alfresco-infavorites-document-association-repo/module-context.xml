@@ -19,12 +19,43 @@
 
 <beans>
 	<!-- This is filtered by Maven at build time, so that module name is single sourced. -->
-    <bean id="com.itdhq-InFavoritesAssociations" class="com.itdhq.infavoritesassociation.InFavoritesAssociation" init-method="init">
+    <bean id="com.itdhq.infavoritesassociation.InFavoritesAssociations" class="com.itdhq.infavoritesassociation.InFavoritesAssociation" init-method="init">
         <property name="nodeService">
             <ref bean="NodeService" />
         </property>
         <property name="policyComponent">
             <ref bean="policyComponent" />
+        </property>
+        <property name="preferenceService">
+            <ref bean="PreferenceService" />
+        </property>
+    </bean>
+
+    <bean id="com.itdhq.infavoritesassociation.InFavoritesAssociationsSpider" class="com.itdhq.infavoritesassociation.InFavoritesSpider" parent="module.baseComponent">
+        <property name="moduleId" value="${project.artifactId}" />  <!-- See module.properties -->
+        <property name="name" value="${project.name}" />
+        <property name="description" value="${project.description}" />
+        <property name="sinceVersion" value="0.1" />
+        <property name="appliesFromVersion" value="0.1" />
+        <property name="nodeService">
+            <ref bean="NodeService" />
+        </property>
+        <property name="personService">
+            <ref bean="PersonService" />
+        </property>
+        <property name="preferenceService">
+            <ref bean="PreferenceService" />
+        </property>
+        <property name="favouritesService">
+            <ref bean="FavouritesService" />
+        </property>
+    </bean>
+
+    <bean id="infavorites-aspect-model" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
+        <property name="models">
+            <list>
+                <value>alfresco/module/${project.artifactId}/model/infavorites-aspect-model.xml</value>
+            </list>
         </property>
     </bean>
 </beans>
