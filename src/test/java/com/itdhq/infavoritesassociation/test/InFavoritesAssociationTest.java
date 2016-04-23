@@ -1,6 +1,6 @@
 package com.itdhq.infavoritesassociation.test;
 
-import com.itdhq.infavoritesassociation.InFavoritesAssociation;
+import com.itdhq.infavoritesassociation.InFavoritesAssociationPolicy;
 import com.tradeshift.test.remote.Remote;
 import com.tradeshift.test.remote.RemoteTestRunner;
 import org.alfresco.model.ContentModel;
@@ -61,7 +61,7 @@ public class InFavoritesAssociationTest {
     private ArrayList<NodeRef> users;
 
     @Autowired
-    protected InFavoritesAssociation inFavoritesAssociation;
+    protected InFavoritesAssociationPolicy inFavoritesAssociation;
 
     @Autowired
     @Qualifier("FavouritesService")

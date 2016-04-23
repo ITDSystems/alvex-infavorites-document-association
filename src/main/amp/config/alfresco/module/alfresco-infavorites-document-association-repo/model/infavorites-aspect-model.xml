@@ -23,12 +23,20 @@
           <parent>cm:classifiable</parent>
           <associations>
               <association name="infav:infavorites_documents_association">
+                  <source>
+                      <mandatory>false</mandatory>
+                      <many>false</many>
+                  </source>
                   <target>
                       <class>cm:content</class>
                       <many>true</many>
                   </target>
               </association>
               <association name="infav:infavorites_folders_association">
+                  <source>
+                      <mandatory>false</mandatory>
+                      <many>false</many>
+                  </source>
                   <target>
                       <class>cm:folder</class>
                       <many>true</many>
