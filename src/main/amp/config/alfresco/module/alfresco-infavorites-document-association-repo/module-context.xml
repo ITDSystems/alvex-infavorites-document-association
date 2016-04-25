@@ -40,7 +40,7 @@
         <property name="description" value="${project.description}" />
         <property name="sinceVersion" value="0.1" />
         <property name="appliesFromVersion" value="0.1" />
-        <property name="executeOnceOnly" value="false" />
+        <property name="executeOnceOnly" value="true" />
         <property name="nodeService">
             <ref bean="NodeService" />
         </property>
