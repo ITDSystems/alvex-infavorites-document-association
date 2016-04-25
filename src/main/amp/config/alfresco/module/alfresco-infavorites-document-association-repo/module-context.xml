@@ -29,6 +29,9 @@
         <property name="preferenceService">
             <ref bean="PreferenceService" />
         </property>
+        <property name="transactionService">
+            <ref bean="TransactionService" />
+        </property>
     </bean>
 
     <bean id="com.itdhq.infavoritesassociation.InFavoritesAssociationSpider" class="com.itdhq.infavoritesassociation.InFavoritesAssociationSpider" parent="module.baseComponent">
@@ -49,6 +52,9 @@
         </property>
         <property name="preferenceService">
             <ref bean="PreferenceService" />
+        </property>
+        <property name="transactionService">
+            <ref bean="TransactionService" />
         </property>
     </bean>
 

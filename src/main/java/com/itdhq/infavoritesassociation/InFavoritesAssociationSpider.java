@@ -1,8 +1,10 @@
 package com.itdhq.infavoritesassociation;
 
 import org.alfresco.model.ContentModel;
+import org.alfresco.repo.domain.node.Transaction;
 import org.alfresco.repo.module.AbstractModuleComponent;
 import org.alfresco.repo.security.authentication.AuthenticationUtil;
+import org.alfresco.repo.transaction.RetryingTransactionHelper;
 import org.alfresco.service.cmr.favourites.FavouritesService;
 import org.alfresco.service.cmr.preference.PreferenceService;
 import org.alfresco.service.cmr.repository.ChildAssociationRef;
@@ -15,6 +17,7 @@ import org.alfresco.service.cmr.security.AuthenticationService;
 import org.alfresco.service.cmr.security.PersonService;
 import org.alfresco.service.namespace.QName;
 import org.alfresco.service.namespace.RegexQNamePattern;
+import org.alfresco.service.transaction.TransactionService;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
@@ -35,12 +38,14 @@ public class InFavoritesAssociationSpider
     protected PersonService personService;
     protected PreferenceService preferenceService;
     protected AuthenticationService authenticationService;
+    protected TransactionService transactionService;
 
     public void setNodeService(NodeService nodeService) { this.nodeService = nodeService; }
     public void setPreferenceService(PreferenceService preferenceService) { this.preferenceService = preferenceService; }
     public void setPersonService(PersonService personService) { this.personService = personService; }
     public void setSearchService(SearchService searchService) { this.searchService = searchService; }
     public void setAuthenticationService(AuthenticationService authenticationService) { this.authenticationService = authenticationService; }
+    public void setTransactionService(TransactionService transactionService) { this.transactionService = transactionService; }
 
     public static final QName infavorites_aspect_qname = QName.createQName("http://itdhq.com/prefix/infav", "infavorites_association_aspect");
     public static final QName infavorites_documents_association_qname = QName.createQName("http://itdhq.com/prefix/infav", "infavorites_documents_association");
@@ -81,7 +86,7 @@ public class InFavoritesAssociationSpider
 
                     try {
                         logger.debug("still waiting");
-                        Thread.sleep(50000);
+                        Thread.sleep(30000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -100,32 +105,36 @@ public class InFavoritesAssociationSpider
         AuthenticationUtil.runAsSystem(new AuthenticationUtil.RunAsWork<Void>() {
             @Override
             public Void doWork() throws Exception {
-                NodeRef container = personService.getPeopleContainer();
-                List<ChildAssociationRef> childRefs = nodeService.getChildAssocs(container, ContentModel.ASSOC_CHILDREN, RegexQNamePattern.MATCH_ALL, false);
-                for (ChildAssociationRef i : childRefs) {
+                transactionService.getRetryingTransactionHelper().doInTransaction(new RetryingTransactionHelper.RetryingTransactionCallback<Void>()
+                {
+                    @Override
+                    public Void execute() throws Throwable {
+                        NodeRef container = personService.getPeopleContainer();
+                        List<ChildAssociationRef> childRefs = nodeService.getChildAssocs(container, ContentModel.ASSOC_CHILDREN, RegexQNamePattern.MATCH_ALL, false);
+                        for (ChildAssociationRef i : childRefs) {
 
-                    NodeRef person = i.getChildRef();
-                    logger.debug("person gotten");
-                    if (!nodeService.getAspects(person).contains(InFavoritesAssociationSpider.infavorites_aspect_qname)) {
-                        nodeService.addAspect(person, InFavoritesAssociationSpider.infavorites_aspect_qname, new HashMap<QName, Serializable>());
+                            NodeRef person = i.getChildRef();
+                            logger.debug("person gotten");
+                            if (!nodeService.getAspects(person).contains(InFavoritesAssociationSpider.infavorites_aspect_qname)) {
+                                nodeService.addAspect(person, InFavoritesAssociationSpider.infavorites_aspect_qname, new HashMap<QName, Serializable>());
+                            }
+
+                            setFavoriteAssociations(person, infavorites_documents_association_qname, "org.alfresco.share.documents.favourites");
+                            setFavoriteAssociations(person, infavorites_folders_association_qname, "org.alfresco.share.folders.favourites");
+                        }
+                        return null;
                     }
-
-                    setFavoriteAssociations(person, infavorites_documents_association_qname, "org.alfresco.share.documents.favourites");
-                    setFavoriteAssociations(person, infavorites_folders_association_qname, "org.alfresco.share.folders.favourites");
-                }
-                //this.setProcessed();
-                return null;
+                });
+            return null;
             }
-        });
+        } );
         logger.info("In favorites spider succeeded in processing favorites.");
-
     }
 
     public void setFavoriteAssociations(NodeRef person, QName associtation, String type)
     {
         logger.debug("InFavoriteAssociationSpider.setFavoriteAssociations");
         if (null != preferenceService.getPreference((String) nodeService.getProperty(person, ContentModel.PROP_USERNAME), type)) {
-            logger.debug(person.toString() + "   " + (String) nodeService.getProperty(person, ContentModel.PROP_USERNAME));
             String favorite_documents = preferenceService.getPreference((String) nodeService.getProperty(person, ContentModel.PROP_USERNAME), type).toString();
             if(!favorite_documents.isEmpty()) {
                 List<NodeRef> favoriteRefs = new ArrayList<>();
@@ -136,12 +145,8 @@ public class InFavoritesAssociationSpider
                         nodeService.getProperties(favoriteRef);
                         favoriteRefs.add(favoriteRef); //new NodeRef(favorite));
                     } catch (Exception e) {
-                        e.printStackTrace();;
+                        e.printStackTrace();
                     }
-                }
-                logger.debug(favoriteRefs);
-                for (NodeRef i: favoriteRefs) {
-                    logger.debug(nodeService.getProperties(i));
                 }
                 nodeService.setAssociations(person, associtation, favoriteRefs);
             } else {
