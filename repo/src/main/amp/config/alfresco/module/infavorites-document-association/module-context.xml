@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one or more
+	contributor license agreements. 
+	The ASF licenses this file to You under the Apache License, Version 2.0
+	(the "License"); you may not use this file except in compliance with
+	the License.  You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+	
+-->
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+
+<beans>
+	<!-- This is filtered by Maven at build time, so that module name is single sourced. -->
+    <bean id="com.alvexcore.repo.InFavoritesAssociationPolicy" class="com.alvexcore.repo.InFavoritesAssociationPolicy" init-method="init">
+        <property name="nodeService">
+            <ref bean="NodeService" />
+        </property>
+        <property name="policyComponent">
+            <ref bean="policyComponent" />
+        </property>
+        <property name="preferenceService">
+            <ref bean="PreferenceService" />
+        </property>
+        <property name="transactionService">
+            <ref bean="TransactionService" />
+        </property>
+    </bean>
+
+    <bean id="com.alvexcore.repo.InFavoritesAssociationSpider" class="com.alvexcore.repo.InFavoritesAssociationSpider" parent="module.baseComponent">
+        <property name="moduleId" value="${project.artifactId}" />
+        <property name="name" value="${project.name}" />
+        <property name="description" value="${project.description}" />
+        <property name="sinceVersion" value="0.1" />
+        <property name="appliesFromVersion" value="0.1" />
+        <property name="executeOnceOnly" value="true" />
+        <property name="nodeService">
+            <ref bean="NodeService" />
+        </property>
+        <property name="searchService">
+            <ref bean="SearchService" />
+        </property>
+        <property name="personService">
+            <ref bean="PersonService" />
+        </property>
+        <property name="preferenceService">
+            <ref bean="PreferenceService" />
+        </property>
+        <property name="transactionService">
+            <ref bean="TransactionService" />
+        </property>
+    </bean>
+
+    <bean id="infavorites-aspect-model" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
+        <property name="models">
+            <list>
+                <value>alfresco/module/${project.artifactId}/model/infavorites-aspect-model.xml</value>
+            </list>
+        </property>
+    </bean>
+</beans>

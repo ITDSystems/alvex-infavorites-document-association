@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.alvexcore.repo</groupId>
+    <artifactId>infavorites-document-association</artifactId>
+    <version>1.1</version>
+    <name>alvex-infavorites-document-association Repository project</name>
+    <packaging>${packaging.type}</packaging>
+    <description>Extension adds favorited users into document association</description>
+
+    <parent>
+        <groupId>com.alvexcore.repo</groupId>
+        <artifactId>master</artifactId>
+        <version>1.1</version>
+    </parent>
+
+    <repositories>
+        <repository>
+            <id>itd-repository</id>
+            <name>ITD Maven Repository</name>
+            <url>http://maven.itdhq.com/pub/repository</url>
+        </repository>
+    </repositories>
+
+</project>

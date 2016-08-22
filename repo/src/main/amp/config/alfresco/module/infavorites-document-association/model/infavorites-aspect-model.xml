@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model name="infav:infav-model" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+    <!-- Optional meta-data about the model -->
+    <version>0.2</version>
+
+    <imports>
+        <!-- Import Alfresco Dictionary Definitions -->
+        <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+        <!-- Import Alfresco Content Domain Model Definitions -->
+        <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+    </imports>
+
+    <!-- FIXME: fix namespace -->
+    <namespaces>
+        <namespace uri="http://itdhq.com/prefix/infav" prefix="infav"/>
+    </namespaces>
+
+    <aspects>
+
+      <aspect name="infav:infavorites_association_aspect">
+          <title>inFavorites</title>
+          <parent>cm:classifiable</parent>
+          <associations>
+              <association name="infav:infavorites_documents_association">
+                  <source>
+                      <mandatory>false</mandatory>
+                      <many>true</many>
+                  </source>
+                  <target>
+                      <class>cm:content</class>
+                      <many>true</many>
+                  </target>
+              </association>
+              <association name="infav:infavorites_folders_association">
+                  <source>
+                      <mandatory>false</mandatory>
+                      <many>true</many>
+                  </source>
+                  <target>
+                      <class>cm:folder</class>
+                      <many>true</many>
+                  </target>
+              </association>
+          </associations>
+      </aspect>
+
+    </aspects>
+
+</model>
