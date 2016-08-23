@@ -19,7 +19,7 @@
 
 <beans>
 	<!-- This is filtered by Maven at build time, so that module name is single sourced. -->
-    <bean id="com.alvexcore.repo.InFavoritesAssociationPolicy" class="com.alvexcore.repo.InFavoritesAssociationPolicy" init-method="init">
+    <bean id="com.alvexcore.repo.infavorites.InFavoritesAssociationPolicy" class="com.alvexcore.repo.infavorites.InFavoritesAssociationPolicy" init-method="init">
         <property name="nodeService">
             <ref bean="NodeService" />
         </property>
@@ -34,7 +34,7 @@
         </property>
     </bean>
 
-    <bean id="com.alvexcore.repo.InFavoritesAssociationSpider" class="com.alvexcore.repo.InFavoritesAssociationSpider" parent="module.baseComponent">
+    <bean id="com.alvexcore.repo.infavorites.InFavoritesAssociationSpider" class="com.alvexcore.repo.infavorites.InFavoritesAssociationSpider" parent="module.baseComponent">
         <property name="moduleId" value="infavorites-document-association" />
         <property name="name" value="alvex-infavorites-document-association Repository project" />
         <property name="description" value="Extension adds favorited users into document association" />

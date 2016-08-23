@@ -1,4 +1,4 @@
-package com.itdhq.infavoritesassociation;
+package com.alvexcore.repo.infavorites;
 
 import org.alfresco.model.ContentModel;
 import org.alfresco.repo.domain.node.Transaction;
