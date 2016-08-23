@@ -1,6 +1,6 @@
-package com.alvexcore.repo.test;
+package com.alvexcore.repo.infavorites.test;
 
-import com.alvexcore.repo.InFavoritesAssociationPolicy;
+import com.alvexcore.repo.infavorites.InFavoritesAssociationPolicy;
 import com.tradeshift.test.remote.Remote;
 import com.tradeshift.test.remote.RemoteTestRunner;
 import org.alfresco.model.ContentModel;
