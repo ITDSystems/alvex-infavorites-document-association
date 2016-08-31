@@ -56,6 +56,9 @@
         <property name="transactionService">
             <ref bean="TransactionService" />
         </property>
+        <property name="repositoryState">
+            <ref bean="repositoryState" />
+        </property>
     </bean>
 
     <bean id="infavorites-aspect-model" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
