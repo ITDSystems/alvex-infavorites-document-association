@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.alfresco.repo.admin.RepositoryState;
 
 /**
  * Created by malchun on 3/27/16.
@@ -39,6 +40,7 @@ public class InFavoritesAssociationSpider
     protected PreferenceService preferenceService;
     protected AuthenticationService authenticationService;
     protected TransactionService transactionService;
+    protected RepositoryState repositoryState;
 
     public void setNodeService(NodeService nodeService) { this.nodeService = nodeService; }
     public void setPreferenceService(PreferenceService preferenceService) { this.preferenceService = preferenceService; }
@@ -46,13 +48,11 @@ public class InFavoritesAssociationSpider
     public void setSearchService(SearchService searchService) { this.searchService = searchService; }
     public void setAuthenticationService(AuthenticationService authenticationService) { this.authenticationService = authenticationService; }
     public void setTransactionService(TransactionService transactionService) { this.transactionService = transactionService; }
+    public void setRepositoryState(RepositoryState repositoryState) { this.repositoryState = repositoryState; }
 
     public static final QName infavorites_aspect_qname = QName.createQName("http://itdhq.com/prefix/infav", "infavorites_association_aspect");
     public static final QName infavorites_documents_association_qname = QName.createQName("http://itdhq.com/prefix/infav", "infavorites_documents_association");
     public static final QName infavorites_folders_association_qname = QName.createQName("http://itdhq.com/prefix/infav", "infavorites_folders_association");
-
-    private NodeRef test = null;
-
 
     @Override
     protected void executeInternal()
@@ -65,32 +65,15 @@ public class InFavoritesAssociationSpider
                 logger.debug("Waiting solr");
                 //logger.debug("authenticated");
 
-                int i = 0;
-                while (null == test)
-                {
-                    ++i;
-                    logger.debug("Try N " + i);
+                if(repositoryState.isBootstrapping()) {
                     try {
-                        AuthenticationUtil.runAsSystem(new AuthenticationUtil.RunAsWork<Void>() {
-                            @Override
-                            public Void doWork() throws Exception {
-                                ResultSet query = searchService.query(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE, SearchService.LANGUAGE_LUCENE, "PATH:\"/app:company_home/app:dictionary\"");
-                                ResultSet query1 = searchService.query(StoreRef.STORE_REF_WORKSPACE_SPACESSTORE, SearchService.LANGUAGE_LUCENE, "PATH:\"/app:company_home/app:guest_home\"");
-                                test = (null != query1.getNodeRef(0)) ? query1.getNodeRef(0) : query.getNodeRef(0);
-                                return null;
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        logger.debug("still waiting");
+                        logger.debug("Sleeping for 30000");
                         Thread.sleep(30000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
+                logger.debug("Repo bootstrap is complete, solr should be operational now");
                 processSystem();
             }
         });
