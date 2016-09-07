@@ -1,5 +1,6 @@
 # alvex-infavorites-document-association
-[![Build Status](https://travis-ci.org/ITDSystems/alvex-meta.svg?branch=master)](https://travis-ci.org/ITDSystems/alvex-infavorites-document-association)
+[![Build Status](https://travis-ci.org/ITDSystems/alvex-infavorites-document-association.svg?branch=master)](https://travis-ci.org/ITDSystems/alvex-infavorites-document-association)
+
 Adds person favorite content nodes and folders into many-to-many association. Keep this associtaions up to date.
 
 
