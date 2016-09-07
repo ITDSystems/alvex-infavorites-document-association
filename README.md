@@ -12,3 +12,11 @@ During processing on first start extension provides errors caused by specific al
 ### TODO
  * refactoring
  * add sites
+
+# Downloads
+
+Alvex component builds are automatically published to [nexus.itdhq.com](http://nexus.itdhq.com) by Travis CI.
+
+# Build
+
+To build Alvex follow [this guide](https://github.com/ITDSystems/alvex#build-component-from-source).
