@@ -7,10 +7,7 @@ import org.alfresco.repo.security.authentication.AuthenticationUtil;
 import org.alfresco.repo.transaction.RetryingTransactionHelper;
 import org.alfresco.service.cmr.favourites.FavouritesService;
 import org.alfresco.service.cmr.preference.PreferenceService;
-import org.alfresco.service.cmr.repository.ChildAssociationRef;
-import org.alfresco.service.cmr.repository.NodeRef;
-import org.alfresco.service.cmr.repository.NodeService;
-import org.alfresco.service.cmr.repository.StoreRef;
+import org.alfresco.service.cmr.repository.*;
 import org.alfresco.service.cmr.search.ResultSet;
 import org.alfresco.service.cmr.search.SearchService;
 import org.alfresco.service.cmr.security.AuthenticationService;
@@ -127,8 +124,8 @@ public class InFavoritesAssociationSpider
                         NodeRef favoriteRef = new NodeRef(favorite);
                         nodeService.getProperties(favoriteRef);
                         favoriteRefs.add(favoriteRef); //new NodeRef(favorite));
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } catch (InvalidNodeRefException e) {
+                        // Got bad node, skipping.
                     }
                 }
                 nodeService.setAssociations(person, associtation, favoriteRefs);
