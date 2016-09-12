@@ -6,13 +6,7 @@ Adds person favorite content nodes and folders into many-to-many association. Ke
 
 ### Usage
 Just install this extension. During first start it will process all already existent favorites and then all favorites would be duplicated in associations.
-#### Note!
-During processing on first start extension provides errors caused by specific alfresco nodes. They are not critical and could be ignored.
 
-
-### TODO
- * refactoring
- * add sites
 
 # Downloads
 
