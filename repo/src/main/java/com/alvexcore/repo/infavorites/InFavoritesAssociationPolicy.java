@@ -7,6 +7,7 @@ import org.alfresco.repo.policy.JavaBehaviour;
 import org.alfresco.repo.policy.PolicyComponent;
 import org.alfresco.repo.transaction.RetryingTransactionHelper;
 import org.alfresco.service.cmr.preference.PreferenceService;
+import org.alfresco.service.cmr.repository.InvalidNodeRefException;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.security.PersonService;
@@ -79,8 +80,8 @@ public class InFavoritesAssociationPolicy
                         NodeRef favoriteRef = new NodeRef(favorite);
                         nodeService.getProperties(favoriteRef);
                         favoriteRefs.add(favoriteRef); //new NodeRef(favorite));
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } catch (InvalidNodeRefException e) {
+                        // Got bad node, skipping.
                     }
                 }
                 nodeService.setAssociations(person, associtation, favoriteRefs);

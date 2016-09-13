@@ -1,4 +1,4 @@
 */target/
-/alf_data_dev/
+alf_data*
 *.iml
 .idea/
