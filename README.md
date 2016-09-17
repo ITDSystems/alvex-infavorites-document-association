@@ -1,17 +1,23 @@
-# alvex-infavorites-document-association
 [![Build Status](https://travis-ci.org/ITDSystems/alvex-infavorites-document-association.svg?branch=master)](https://travis-ci.org/ITDSystems/alvex-infavorites-document-association)
 
-Adds person favorite content nodes and folders into many-to-many association. Keep this associtaions up to date.
+# alvex-infavorites-document-association
+========================
 
+Adds person favorite content nodes and folders into associations in user profile. Keep this associtaions up to date.
 
-### Usage
-Just install this extension. During first start it will process all already existent favorites and then all favorites would be duplicated in associations.
+Compatible with Alfresco 5.1.
 
+This component depends on:
+* [Alvex Utils](https://github.com/ITDSystems/alvex-utils)
 
 # Downloads
 
-Alvex component builds are automatically published to [nexus.itdhq.com](http://nexus.itdhq.com) by Travis CI.
+Download ready-to-use Alvex components via [Alvex](https://github.com/ITDSystems/alvex#downloads).
 
-# Build
+# Build from source
 
 To build Alvex follow [this guide](https://github.com/ITDSystems/alvex#build-component-from-source).
+
+# Use
+
+After installation during first start extension will process all existent favourites. Then all new favorites would be duplicated in associations.
